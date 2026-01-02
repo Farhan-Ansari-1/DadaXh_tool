@@ -66,9 +66,9 @@ except Exception as e:
     console.print(f"[bold red]❌ API Error bhai:[/bold red] {e}")
     sys.exit()
 
-# --- VOICE ENGINE ---
 async def generate_audio(text):
-    communicate = edge_tts.Communicate(text, "en-IN-PrabhatNeural")
+    # rate='+25%' ka matlab hai 25% tezi se bolega
+    communicate = edge_tts.Communicate(text, "en-IN-PrabhatNeural", rate="+25%")
     await communicate.save("voice.mp3")
 
 def speak(text):
