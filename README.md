@@ -1,81 +1,72 @@
-# 👾 DadaXh - AI Hacking Assistant (CLI)
+# 👾 DadaXh - The Hacker's AI Assistant
 
-**DadaXh** is a powerful, voice-activated AI assistant designed for **Ethical Hackers, Developers, and Students**. It runs directly in your terminal, providing instant coding help, hacking concepts, and project assistance with a unique "Hacker Persona".
-
-Powered by **Google Gemini AI** and **Edge TTS** (Natural Voice).
+**DadaXh** ek advanced AI Assistant hai jo **Google Gemini** se powered hai. Ye sirf ek chatbot nahi, balki ek **Coding Partner** aur **Hacking Mentor** hai jo tumhari awaaz sun sakta hai, bol sakta hai, aur system commands execute kar sakta hai.
 
 ---
 
-## 🚀 Features
+## 🚀 Features (Abhi tak ka update)
 
-- **🧠 Smart AI Brain:** Powered by Google's Gemini Flash model for fast and accurate technical answers.
-- **🗣️ Natural Voice Output:** Speaks responses using a high-quality Indian Male voice (Edge TTS).
-- **💀 Hacker Persona:** Optimized to teach Ethical Hacking & Python concepts simply (Urdu/Hindi medium friendly).
-- **🔒 Secure:** Uses `.env` variables to keep API keys safe.
-- **🎨 Beautiful UI:** Rich text formatting (Bold, Tables, Code Blocks) in the terminal.
-- **📱 Cross-Platform:** Works on **Kali Linux**, **Windows**, and **Android (Termux)**.
+### 🧠 **Super Brain (Gemini 2.5)**
+- Google ka latest **Gemini 2.5 Flash** model use karta hai.
+- Coding, Hacking concepts, aur General talks mein expert.
+
+### 🗣️ **Robust Voice System (No Crashes)**
+- **Sunna (Listen):** `SoundDevice` + `SpeechRecognition` ka use karke banaya gaya hai.
+  - *Faayda:* Purane `PyAudio` errors (mic freeze/crash) fix ho gaye hain.
+  - Auto-detects Mic & Channels.
+- **Bolna (Speak):** `Edge-TTS` ka use karta hai jo ekdum insaan jaisi awaaz (Natural Voice) nikalta hai.
+
+### 💾 **Long-Term Memory**
+- **SQLite Database** ka use karke purani baatein yaad rakhta hai.
+- Abhi pichli **50 baatein** yaad rakhne ki shamta hai (Free & Local).
+- Database file: `dadaxh_memory.db` (Auto-created).
+
+### ⚙️ **System Automation**
+- **Apps Open:** Notepad, Calculator, Chrome, etc.
+- **Store Apps:** WhatsApp, Spotify (`start whatsapp:` support).
+- **Websites:** Youtube, Google, etc.
+- **Terminal:** Ping, Scan, aur basic commands run kar sakta hai.
+
+### 🎨 **Hacker UI**
+- `Rich` library ka use karke Matrix/Cyberpunk style terminal interface.
 
 ---
 
-## 🛠️ Installation
+## 🛠️ Installation & Setup
 
-### 1. Clone the Repository
-Open your terminal and download the tool:
+### 1. Requirements Install karo
+Terminal mein ye command chalao taaki saari libraries aa jayein:
+
 ```bash
-git clone [https://github.com/Farhan-Ansari-1/DadaXh_tool.git](https://github.com/Farhan-Ansari-1/DadaXh_tool.git)
-cd DadaXh_tool
+pip install google-generativeai python-dotenv rich edge-tts pygame speechrecognition sounddevice numpy scipy
+```
 
-2. Install Dependencies
+### 2. API Key Setup
+Project folder mein ek nayi file banao jiska naam ho: `.env`
+Uske andar apni Gemini API Key daalo:
 
-Make sure you have Python installed. Then run:
-Bash
+```env
+GEMINI_API_KEY=yahan_teri_api_key_daal
+```
+*(Key lene ke liye: https://aistudio.google.com/app/apikey)*
 
-pip install -r requirements.txt
+---
 
-(Linux/Termux Users: You also need an audio player)
-Bash
+## 💀 How to Run
 
-sudo apt install mpg123 -y   # For Kali/Ubuntu
-pkg install mpg123 -y        # For Termux
+Bas ye command chala:
 
-3. Setup API Key (Important!) 🔑
-
-You need a Google Gemini API Key.
-
-    Get your key from Google AI Studio.
-
-    Create a .env file in the project folder:
-    Bash
-
-nano .env
-
-Add your key inside the file (No spaces, no quotes):
-Plaintext
-
-    GEMINI_API_KEY=Your_Secret_Key_Here
-
-    Note: Never share your .env file.
-
-⚡ Usage
-
-Run the tool simply by typing:
-Bash
-
+```bash
 python DadaXh.py
+```
 
-Pro Tip (Create a Shortcut)
+### Controls:
+- **Bolne ke liye:** Tool run hote hi mic active hoga (5 sec tak sunega).
+- **Skip Voice:** Agar mic atke ya nahi bolna, to `Ctrl+C` daba, wo **Typing Mode** pe aa jayega.
+- **Exit:** "Bye", "Exit", ya "Bhaag" bol/likh kar band kar sakte ho.
 
-Add this to your .zshrc or .bashrc to run it from anywhere by typing dadaxh:
-Bash
+---
 
-echo "alias dadaxh='cd ~/DadaXh_tool && python DadaXh.py'" >> ~/.zshrc
-source ~/.zshrc
-
-🛡️ Disclaimer
-
-DadaXh is strictly for Educational Purposes. This tool is designed to assist in learning Ethical Hacking and Cybersecurity. The author (@Farhan-Ansari-1) is not responsible for any misuse of the information provided by this AI. Always have permission before testing any system.
-👨‍💻 Author
-
-Farhan Ansari (farX)
-
-    Cybersecurity Enthusiast & BSc IT Student
+## 📂 Project Structure
+- `DadaXh.py` - Main Brain (Entry Point).
+- `modules/` - Saare body parts (Brain, Kaan, Mooh, Memory).
