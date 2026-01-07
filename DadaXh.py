@@ -7,19 +7,33 @@ from modules.ui import console, print_banner
 from modules.brain import init_brain
 from modules.audio import speak
 from modules.automation import execute_command
+from modules.memory import init_db, save_interaction, load_history
+from modules.listen import listen
 
 # --- CHAT LOOP (Baat-cheet shuru) ---
 def start_chat():
-    # Brain Initialize karo (API Key check modules/config.py me ho jayega)
-    chat_session = init_brain()
+    # 1. Memory Initialize karo
+    init_db()
+    old_chat = load_history(limit=50) # Ab pichle 50 messages yaad rakhega (Free hai!)
+    
+    # 2. Brain Initialize karo (Purani yaadein dekar)
+    chat_session = init_brain(history_data=old_chat)
     
     # Welcome Banner Print karo
     print_banner()
 
     while True:
         try:
-            # User se input lo
-            user_input = console.input("\n[bold cyan]💀 farX (You):[/bold cyan] ")
+            # 1. Voice Input Try karo
+            try:
+                user_input = listen()
+            except KeyboardInterrupt:
+                # Agar user Ctrl+C dabaye mic ke time, to text mode pe jao
+                user_input = None
+            
+            # 2. Agar Voice fail hui (Silence/Noise), to Text Input lo
+            if not user_input:
+                user_input = console.input("\n[bold cyan]⌨️  Likh ke bata (Mic fail):[/bold cyan] ")
             
             # Exit commands check karo
             if user_input.lower() in ['exit', 'quit', 'bye', 'bhaag']:
@@ -41,7 +55,14 @@ def start_chat():
             if "[EXECUTE]:" in response_text:
                 parts = response_text.split("[EXECUTE]:")
                 response_text = parts[0].strip()  # Ye bolne wala text hai
-                cmd = parts[1].strip()            # Ye run karne wala command hai
+                
+                # --- COMMAND CLEANING (Robust) ---
+                cmd = parts[1].strip()
+                cmd = cmd.replace("```", "").replace("`", "")  # Markdown hatao
+                # Agar command quotes mein hai ("cmd" ya 'cmd'), to unhe hatao
+                if (cmd.startswith("'") and cmd.endswith("'")) or (cmd.startswith('"') and cmd.endswith('"')):
+                    cmd = cmd[1:-1]
+                cmd = cmd.strip()
 
             console.print("\n[bold purple]👾 DadaXh:[/bold purple]")
             console.print(Markdown(response_text))
@@ -49,6 +70,9 @@ def start_chat():
             console.print("[dim italic]🔊 Speaking...[/dim italic]")
             clean_text = response_text.replace("*", "").replace("#", "").replace("`", "")  # Special chars hatao bolne ke liye
             speak(clean_text)
+            
+            # --- MEMORY SAVE ---
+            save_interaction(user_input, response_text)
             
             # Agar command thi, to ab run karo
             if cmd:

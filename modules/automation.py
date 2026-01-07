@@ -10,5 +10,7 @@ def execute_command(command):
             console.print("[bold red]⚠️ Command Blocked (Safety Protocol).[/bold red]")
             return
         os.system(command)
+    except KeyboardInterrupt:
+        console.print("\n[bold red]⚠️ Command Stopped by User (DadaXh is still alive).[/bold red]")
     except Exception as e:
         console.print(f"[bold red]❌ Execution Error:[/bold red] {e}")
